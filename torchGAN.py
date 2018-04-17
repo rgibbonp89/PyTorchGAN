@@ -54,7 +54,6 @@ def mnist_loader(numbers):
 class Generator(nn.Module):
 	def __init__(self, dataset = 'mnist'):
 		super(Generator, self).__init__()
-		if dataset == 'mnist' or dataset == 'fashion-mnist':
 			self.input_height = 28
 			self.input_width = 28
 			self.input_dim = 100
@@ -92,7 +91,6 @@ class Generator(nn.Module):
 class Discriminator(nn.Module):
 	def __init__(self, dataset = 'mnist'):
 		super(Discriminator, self).__init__()
-		if dataset == 'mnist' or dataset == 'fashion-mnist':
 			self.input_height = 28
 			self.input_width = 28
 			self.input_dim = 784
