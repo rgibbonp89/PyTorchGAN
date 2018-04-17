@@ -6,6 +6,6 @@ My plan is to, at some point, do a similar thing for a couple of other GAN varia
 
 To run the code, just call the following in your terminal:
 
-python3 torchGAN.py --number <number that you want to generate> --epochs <the number of epochs> --glr <the generation learning rate> --dlr <the discriminator learning rate>
+python3 torchGAN.py --number [number that you want to generate] --epochs [the number of epochs] --glr [the generation learning rate] --dlr [the discriminator learning rate]
   
 If you don't specify anything for the command line arguments, the code just executes with default settings.
