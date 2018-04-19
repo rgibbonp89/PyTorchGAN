@@ -12,4 +12,13 @@ If you don't specify anything for the command line arguments, the code just exec
 
 ## Fashion-MNIST
 
-I've also added support for fashion-MNIST, so you can generate images from that dataset, too. The default command line arguments are the same, but you can also specify --mnist as either 'digits' or 'fashion'. 
+I've also added support for fashion-MNIST, so you can generate images from that dataset, too. The default command line arguments are the same, but you can also specify --mnist as either 'digits' or 'fashion'.
+
+You'll also need to save the fashion-MNIST data locally. I'd recommend the following:
+
+1. Install tensorflow
+2. Run from tensorflow.examples.tutorials.mnist import input_data in python
+3. Run data = input_data.read_data_sets('data/fashion', source_url='http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/', one_hot=True)
+4. Unpack the downloaded .gz file and put it in a ./fashion subdirectory in the same directory as the original MNIST data
+
+Enjoy!
