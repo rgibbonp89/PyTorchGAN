@@ -16,7 +16,7 @@ I've also added support for fashion-MNIST, so you can generate images from that 
 
 You'll also need to save the fashion-MNIST data locally. I'd recommend running the following:
 
-$pip3 install tensorflow 
+$pip3 install tensorflow </br>
 from tensorflow.examples.tutorials.mnist import input_data
 data = input_data.read_data_sets('data/fashion', source_url='http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/', one_hot=True)
 
