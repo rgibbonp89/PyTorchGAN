@@ -22,15 +22,19 @@ import torch.optim as optim
 
 import argparse
 
+import matplotlib.pyplot as plt
+
 parser = argparse.ArgumentParser(description = 'GAN implementation in PyTorch')
 
 parser.add_argument('--number', type = float, default = 3, help = 'GAN number')
 parser.add_argument('--epochs', type = float, default = 4, help = 'Number of epochs')
 parser.add_argument('--glr', type = float, default = .00001, help = 'Generator lr')
 parser.add_argument('--dlr', type = float, default = .001, help = 'Discriminator lr')
+parser.add_argument('--mnist', type = str, default = 'digits', choices = ['digits', 'fashion'], help = 'Dataset')
+
 
 args = parser.parse_args()
-
+ 
 def mnist_loader(numbers):
 	def one_hot(label, output_dim):
 		one_hot = np.zeros((len(label), output_dim))	
@@ -48,12 +52,32 @@ def mnist_loader(numbers):
 	for idx in range(0,len(trainX)):
 		if trainY[idx] in numbers:
 			newtrainX.append(trainX[idx])
+	return np.array(newtrainX), trainY, len(trainX)
+
+def fashion_mnist_loader(numbers):
+	def one_hot(label, output_dim):
+		one_hot = np.zeros((len(label), output_dim))	
+		for idx in range(0,len(label)):
+			one_hot[idx, label[idx]] = 1		
+		return one_hot
+	#Training Data
+	f = open('/home/richard/Desktop/QuantFriday/gan_numpy/data/fashion/train-images-idx3-ubyte')
+	loaded = np.fromfile(file=f, dtype=np.uint8)
+	trainX = loaded[16:].reshape((60000, 28, 28, 1)).astype(np.float32) /  127.5 - 1
+	f = open('/home/richard/Desktop/QuantFriday/gan_numpy/data/fashion/train-labels-idx1-ubyte')
+	loaded = np.fromfile(file=f, dtype=np.uint8)
+	trainY = loaded[8:].reshape((60000)).astype(np.int32)
+	newtrainX = []
+	for idx in range(0,len(trainX)):
+		if trainY[idx] in numbers:
+			newtrainX.append(trainX[idx])
 	return np.array(newtrainX), trainY, len(trainX) 
 
 
 class Generator(nn.Module):
 	def __init__(self, dataset = 'mnist'):
 		super(Generator, self).__init__()
+		if dataset == 'mnist' or dataset == 'fashion-mnist':
 			self.input_height = 28
 			self.input_width = 28
 			self.input_dim = 100
@@ -91,6 +115,7 @@ class Generator(nn.Module):
 class Discriminator(nn.Module):
 	def __init__(self, dataset = 'mnist'):
 		super(Discriminator, self).__init__()
+		if dataset == 'mnist' or dataset == 'fashion-mnist':
 			self.input_height = 28
 			self.input_width = 28
 			self.input_dim = 784
@@ -111,8 +136,10 @@ class Discriminator(nn.Module):
 		return x
 
 # load data
-
-trainx, _, train_size = mnist_loader([args.number])
+if args.mnist == 'digits':
+	trainx, _, train_size = mnist_loader([args.number])
+else:
+	trainx, _, train_size = fashion_mnist_loader([args.number])
 
 # instantiate objects of the class Generator and Discriminator respectively
 G = Generator()
@@ -169,6 +196,6 @@ plt.show()
 
 # real number
 
-im_real = plt.imshow(trainx[10].reshape(28,28), cmap='gray', interpolation='none')
+im_real = plt.imshow(trainx[1].reshape(28,28), cmap='gray', interpolation='none')
 cbar = plt.colorbar(im_real)
 plt.show()
